@@ -6,9 +6,26 @@
     <title>Webhook Server - Request Inspector</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
     <div class="container">
+        <div id="info-exclaim" tabindex="0" aria-label="Show info" style="position:absolute;top:30px;right:40px;z-index:10;cursor:pointer;font-size:2.2rem;color:#ff9800;background:white;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.08);border:2px solid #ffe0b2;">
+            <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div id="info-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center;">
+            <div style="background:white;padding:32px 28px 24px 28px;border-radius:14px;max-width:420px;width:90vw;box-shadow:0 8px 32px rgba(0,0,0,0.18);position:relative;">
+                <button id="close-info-modal" aria-label="Close info" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:#888;"><i class="fa-solid fa-xmark"></i></button>
+                <h2 style="margin-bottom:12px;font-size:1.3rem;color:#ff9800;"><i class="fa-solid fa-circle-exclamation"></i> Info & Usage</h2>
+                <ul style="margin-left:1.2em;margin-bottom:0.7em;">
+                    <li><b>Data Retention:</b> Webhook endpoints and requests are kept for <b>1 hour</b> after their last use. Unused endpoints are auto-deleted.</li>
+                    <li><b>Saving:</b> Endpoints are saved in your browser (localStorage) and in the database for persistence across sessions and server restarts.</li>
+                    <li><b>Refresh:</b> The request list auto-refreshes every 2 seconds. You can also use the <b>Refresh</b> button to update manually.</li>
+                    <li><b>Clear:</b> Use the <b>Clear All</b> button to delete all requests for your endpoint.</li>
+                </ul>
+                <div style="font-size:0.95em;color:#666;">Tip: You can generate a new endpoint anytime. All data is private to your browser and your endpoint.</div>
+            </div>
+        </div>
         <header>
             <h1><i class="fa-solid fa-link"></i> Shashi's Webhook Server</h1>
             <p class="subtitle">Generate a unique webhook URL and inspect incoming requests in real-time</p>
@@ -18,8 +35,7 @@
             <div class="card">
                 <h2>Your Webhook URL</h2>
                 <div class="webhook-url-container">
-                    <input type="text" id="webhookUrl" class="webhook-input" readonly placeholder="Click 'Generate' to create your webhook URL">
-                    <button id="generateBtn" class="btn btn-secondary"><i class="fa-solid fa-dice"></i> Generate</button>
+                    <input type="text" id="webhookUrl" class="webhook-input" readonly placeholder="Your webhook URL will appear here">
                     <button id="copyBtn" class="btn btn-secondary" disabled><i class="fa-regular fa-copy"></i> Copy</button>
                 </div>
                 <p class="info-text">Share this URL to receive webhook requests</p>
@@ -57,6 +73,29 @@
     </div>
 
     <script src="app.js"></script>
+        <script>
+        // Info modal logic
+        const exclaim = document.getElementById('info-exclaim');
+        const modal = document.getElementById('info-modal');
+        const closeModal = document.getElementById('close-info-modal');
+        function showModal() {
+            modal.style.display = 'flex';
+            setTimeout(() => { closeModal.focus(); }, 200);
+        }
+        function hideModal() {
+            modal.style.display = 'none';
+            exclaim.focus();
+        }
+        exclaim.addEventListener('click', showModal);
+        exclaim.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') showModal(); });
+        closeModal.addEventListener('click', hideModal);
+        modal.addEventListener('click', e => { if (e.target === modal) hideModal(); });
+        closeModal.addEventListener('keydown', e => { if (e.key === 'Escape') hideModal(); });
+        // Show modal on first page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(showModal, 400);
+        });
+        </script>
     <footer class="footer">
         <div class="footer-content">
             <span>Follow me:</span>
