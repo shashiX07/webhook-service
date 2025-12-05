@@ -38,21 +38,101 @@ The server will run on `http://localhost:3000`
 
 ## API Endpoints
 
-### Generate New Webhook
-- **GET** `/api/generate-webhook`
-- Returns a new SHA256-based webhook endpoint
+### 1. Generate New Webhook
+**GET** `/api/generate-webhook`
 
-### Receive Webhook
-- **ALL** `/webhook/:endpoint`
-- Accepts any HTTP method and stores the request data
+**Request:**
+```
+GET /api/generate-webhook
+```
+Optionally, reuse an existing endpoint:
+```
+GET /api/generate-webhook?endpoint=<existing-endpoint>
+```
 
-### Get Requests
-- **GET** `/api/webhook/:endpoint/requests`
-- Returns all requests received for a specific endpoint
+**Response:**
+```json
+{
+	"success": true,
+	"endpoint": "<sha256-endpoint>",
+	"url": "http://localhost:3000/webhook/<sha256-endpoint>",
+	"createdAt": "2025-12-06T12:34:56.789Z",
+	"reused": false
+}
+```
 
-### Clear Requests
-- **DELETE** `/api/webhook/:endpoint/requests`
-- Clears all stored requests for an endpoint
+---
+
+### 2. Receive Webhook
+**ALL HTTP METHODS** `/webhook/:endpoint`
+
+**Request:**
+```
+POST /webhook/<endpoint>
+Content-Type: application/json
+
+{
+	"key": "value"
+}
+```
+
+**Response:**
+```json
+{
+	"success": true,
+	"message": "Webhook received successfully",
+	"timestamp": "2025-12-06T12:34:56.789Z"
+}
+```
+
+---
+
+### 3. Get Requests for Endpoint
+**GET** `/api/webhook/:endpoint/requests`
+
+**Request:**
+```
+GET /api/webhook/<endpoint>/requests
+```
+
+**Response:**
+```json
+{
+	"success": true,
+	"endpoint": "<endpoint>",
+	"totalRequests": 2,
+	"requests": [
+		{
+			"method": "POST",
+			"headers": { ... },
+			"body": { ... },
+			"query": { ... },
+			"params": { ... },
+			"timestamp": "2025-12-06T12:34:56.789Z",
+			"ip": "127.0.0.1"
+		},
+		// ...more requests
+	]
+}
+```
+
+---
+
+### 4. Clear Requests for Endpoint
+**DELETE** `/api/webhook/:endpoint/requests`
+
+**Request:**
+```
+DELETE /api/webhook/<endpoint>/requests
+```
+
+**Response:**
+```json
+{
+	"success": true,
+	"message": "All requests cleared"
+}
+```
 
 ## Tech Stack
 
@@ -62,7 +142,6 @@ The server will run on `http://localhost:3000`
 
 ## Notes
 
-- All data is stored in memory and will be lost when the server restarts
 - Perfect for testing, debugging, and development
 - Use ngrok or similar tools to expose your local server to the internet
 
