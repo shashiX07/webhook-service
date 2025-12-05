@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Server - Request Inspector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fa-solid fa-link"></i> Shashi's Webhook Server</h1>
+            <p class="subtitle">Generate a unique webhook URL and inspect incoming requests in real-time</p>
+        </header>
+
+        <div class="webhook-section">
+            <div class="card">
+                <h2>Your Webhook URL</h2>
+                <div class="webhook-url-container">
+                    <input type="text" id="webhookUrl" class="webhook-input" readonly placeholder="Click 'Generate' to create your webhook URL">
+                    <button id="generateBtn" class="btn btn-secondary"><i class="fa-solid fa-dice"></i> Generate</button>
+                    <button id="copyBtn" class="btn btn-secondary" disabled><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <p class="info-text">Share this URL to receive webhook requests</p>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="totalRequests">0</div>
+                <div class="stat-label">Total Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lastRequestTime">-</div>
+                <div class="stat-label">Last Request</div>
+            </div>
+        </div>
+
+        <div class="requests-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-inbox"></i> Incoming Requests</h2>
+                <div class="controls">
+                    <button id="refreshBtn" class="btn btn-small"><i class="fa-solid fa-rotate"></i> Refresh</button>
+                    <button id="clearBtn" class="btn btn-small btn-danger" disabled><i class="fa-solid fa-trash"></i> Clear All</button>
+                </div>
+            </div>
+
+            <div id="requestsList" class="requests-list">
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <p>No requests received yet</p>
+                    <p class="empty-subtitle">Generate a webhook URL and send requests to see them here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <footer class="footer">
+        <div class="footer-content">
+            <span>Follow me:</span>
+            <a href="https://github.com/shashix07" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/shashikant-kataria" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://shashikant-kataria.vercel.app/" target="_blank" rel="noopener" title="Portfolio"><i class="fa-solid fa-globe"></i></a>
+            <span style="margin-left:20px;" style="color: white">Source: <a href="https://github.com/shashix07/webhook-service" target="_blank" rel="noopener"><i class="fab fa-github"></i> Project</a></span>
+        </div>
+    </footer>
+</body>
+</html>
